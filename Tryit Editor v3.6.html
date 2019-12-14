@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+*{
+    box-sizing: border-box;
+  transition: 0.7s;
+}
+body {
+    margin: 0;
+    width: 100vw;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/*the description page*/
+#semi-description {
+  display: none;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #F8FAFF;
+    color: #353866;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px  rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1;
+}
+.fade-out {
+	-webkit-animation: fade-out 0.7s ease-out both;
+	        animation: fade-out 0.7s ease-out both;
+}
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+button {  /*buttons on the bage */
+    border: 0;
+    border-radius: 2px;
+    background: #AAABD3;
+    color: #F8FAFF;
+    font-size:  1.5em;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0px 1px 5px lightgray,-1px 0px 5px lightgray,0px -1px 5px lightgray,1px 0px 5px lightgray;
+}
+button:hover {
+    box-shadow: 0px 7px 5px lightgray,-2px 0px 5px lightgray,0px -2px 5px lightgray,7px 0px 5px lightgray;
+}
+
+main {
+  poin ter-events: none;
+  fil ter: blur(1px);
+  overflow: hidden;
+  min-height: 100vh;
+}
+#help-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.help-page {  
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    min-height: 0;
+    width: 0;
+    background: red;
+    overflow: hidden;
+}
+#close {   /*this is the close button style*/
+  transform: rotate(45deg);
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-size: 3em;
+  background: green;
+  cursor: pointer;
+}
+.open-help {
+  -webkit-animation: help 0.5s forwards;
+  animation: help 0.5s forwards;
+}
+@keyframes help {
+  from {
+  border-radius: 0 0 100%;
+  width: 0;
+  min-height: 0;
+  }
+  to {
+  border-radius: 0 0 0 0;
+  width: 100vw;
+  min-height: 100vh;
+  }
+}
+/*description page*/
+#description-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.description {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  min-height: 0;
+  width: 0;
+  background: red;
+  overflow: hidden;
+}
+.open-description {
+  -webkit-animation: desc 0.5s forwards;
+  animation: desc 0.5s forwards;
+}
+@keyframes desc {
+  from {
+  border-radius: 0 0 0 100%;
+  width: 0;
+  min-height: 0;
+  }
+  to {
+  border-radius: 0 0 0 0;
+  width: 100vw;
+  min-height: 100vh;
+  }
+}
+/*----------------*/
+.comparison-area {
+  padding: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  box-shadow: 0px 8px 16px  rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+</style>
+</head>
+<body>
+    <!--make a Description page-->
+  <div id="semi-description">
+    <h3>This Program returns the maximum number of whole batches that can be cooked from a recipe </h3>
+    <button class="butdes">START</button>
+  </div>
+  <main>
+    <a id="help-link" href="#">help<span class="que"> ?</span></a>
+    <a id="description-link" href="#">description</a>
+    <section class="help-page"> <!--this section is Information for help-->
+      <span id="close" onclick="parentNode.classList.remove('open-help')">+</span> 
+      <h1>khaled</h1>
+    </section>
+    <section class="description">
+      <span id="close" onclick="parentNode.classList.remove('open-description')">+</span>
+      <h1>khaled</h1>
+    </section>
+    <section class="comparison-area"> <!--comparison area-->
+      <input id="name" type="text" placeholder="enter your name">
+      <table id="data">
+        <tr>
+          <th>Ingredients</th>
+          <th>Quantity</th>
+          <th>-------</th>
+          <th>Unit</th>
+        </tr>
+        <tr>
+          <td>
+            <input id="name-of-ingredient" type="text" placeholder="Component">
+          </td>
+          <td>
+            <input id="quantity-of-one" type="number" placeholder="num" min="1">
+          </td>
+          <td>
+            <input id="quantity-you-have" type="number" placeholder="num" min="1">
+          </td>
+          <td>
+            <select>
+              <option value="one">one</option>
+              <option value="two">two</option>
+              <option value="three">three</option>
+            </select>
+          </td>
+          <td>
+            <div id="error">kk</div> 
+            <div id="plus">+</div>  <!-- add new line onclick-->
+          </td>
+        </tr>
+      </table>
+      <button id="compare">creat</button>
+     </section>
+    <div id="message-of-compare"></div>
+  </main>
+
+  <script>
+    var descriptionButton = document.querySelector('.butdes');
+var main = document.querySelector('main');
+function display() {
+  this.style.display = "none";
+}
+function changeView(event) {  //To switch between the pages 
+  var parent = event.target.parentNode;
+  parent.classList = "fade-out";
+  main.style.cssText= "filter: blur(0);pointer-events: auto;";
+  parent.addEventListener('animationend', display); 
+}
+descriptionButton.addEventListener('click', changeView);
+/*open the section of help information*/
+var helpPage = document.querySelector('.help-page');
+var helpLink = document.getElementById('help-link');
+function openInfo() {
+  helpPage.classList.add("open-help");
+}
+helpLink.addEventListener('click', openInfo);
+/*open the section of description */
+var descriptionPage = document.querySelector('.description')
+var descriptionLink = document.getElementById('description-link');
+function openDesc() {
+  descriptionPage.classList.add("open-description");
+}
+descriptionLink.addEventListener('click', openDesc);
+/*add new line when click on (+) button*/
+var tableOfDataEntered = document.getElementById('data');
+var plusButton = document.getElementById('plus'); 
+var errorMassage = document.getElementById('error');
+function addNewLine() {  //check of all input value if not empty add new line
+  var nameArea = document.getElementById('name');
+  var allIngredientValue = document.querySelectorAll('#name-of-ingredient');
+  var allQuantityValue = document.querySelectorAll('#quantity-of-one');
+  var allYourQuantity = document.querySelectorAll('#quantity-you-have');
+   
+  var tr = document.createElement('tr'); //new line content
+  tr.innerHTML = `<td> 
+    <input id="name-of-ingredient" type="text" placeholder="Component">
+</td>
+<td>
+    <input id="quantity-of-one" type="number" placeholder="num" min="1">
+</td>
+<td>
+    <input id="quantity-you-have" type="number" placeholder="num" min="1">
+</td>
+<td>
+    <select>
+        <option value="one">one</option>
+        <option value="two">two</option>
+        <option value="three">three</option>
+    </select>
+</td>`
+  var a = 0; // I use the variable for check operations 
+  if (nameArea.value != "") {
+    for (var x = 0; x <= allIngredientValue.length-1; x++) {
+      if (allIngredientValue[x].value == "" ||
+            allQuantityValue[x].value == "" ||
+            allYourQuantity[x].value == "") {
+        errorMassage.textContent = "Fill out all the information";
+        a++; //If there is an empty place, (a) increases by one amount 
+    }        
+  }
+    /*As long as a == zero, this means that there is none empty input.
+       so can add a new line onclick (+) button
+    */
+    if (a == 0) {  
+      tableOfDataEntered.appendChild(tr);
+      var lastTr = tableOfDataEntered.lastElementChild; // move button to the next line
+      lastTr.appendChild(this.parentNode);
+    }
+    }else{
+      errorMassage.textContent = "Fill";  
+    }
+}
+plusButton.addEventListener('click', addNewLine);
+/*Now is the time to compare '_'*/
+var compButton = document.getElementById('compare');
+function compare() {  // this function save data in object 
+  var allIngredientValue = document.querySelectorAll('#name-of-ingredient');
+  var allQuantityValue = document.querySelectorAll('#quantity-of-one');
+  var allYourQuantity = document.querySelectorAll('#quantity-you-have');
+  /*I create two objects to take the data inside to compare them*/
+  var data = {
+    quantities : [],
+    yourQuantities : [],
+    ingrendients : 0
+  };
+  for (var x = 0; x <= allIngredientValue.length-1; x++) {
+      if (allIngredientValue[x].value != "" &&
+            allQuantityValue[x].value != "" &&
+            allYourQuantity[x].value != "") {
+            data.quantities.push(allQuantityValue[x].value);
+            data.yourQuantities.push(allYourQuantity[x].value);
+        data.ingrendients += 1;
+      }
+  }
+  compaerData(data)
+}
+var message = document.getElementById('message-of-compare');
+function compaerData(data) {
+  var possibleNumber = [];
+  for (var x = 0; x <= data.quantities.length-1; x++) {
+    if (data.yourQuantities[x] % data.quantities[x] == 0){
+      possibleNumber.push(data.yourQuantities[x] / data.quantities[x])
+    }else {
+      var k = data.yourQuantities[x] % data.quantities[x];
+      var h = data.yourQuantities[x] - k;
+      possibleNumber.push(h / data.quantities[x]);
+    }
+  }
+  var d = Math.min.apply(null, possibleNumber);
+  message.textContent = `you can made ${d} of `
+  }
+compButton.addEventListener('click', compare)
+  </script>
+</body>
+</html>
